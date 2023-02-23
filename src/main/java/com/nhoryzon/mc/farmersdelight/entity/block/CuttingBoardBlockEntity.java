@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class CuttingBoardBlockEntity extends SyncedBlockEntity {
+public class CuttingBoardBlockEntity extends SyncedBlockEntity implements Inventory {
 
     public static final String TAG_KEY_IS_ITEM_CARVED = "IsItemCarved";
 
@@ -222,11 +222,47 @@ public class CuttingBoardBlockEntity extends SyncedBlockEntity {
         return inventory;
     }
 
-    public boolean isEmpty() {
+	@Override
+	public int size() {
+		return 1;
+	}
+
+	public boolean isEmpty() {
         return inventory.getStack(0).isEmpty();
     }
 
-    public ItemStack getStoredItem() {
+	@Override
+	public ItemStack getStack(int slot) {
+		if (slot != 0) return ItemStack.EMPTY;
+		return inventory.getStack(0);
+	}
+
+	@Override
+	public ItemStack removeStack(int slot, int amount) {
+		ItemStack returnValue = inventory.removeStack(slot, amount);
+		inventoryChanged();
+		return returnValue;
+	}
+
+	@Override
+	public ItemStack removeStack(int slot) {
+		ItemStack returnValue = inventory.removeStack(slot);
+		inventoryChanged();
+		return returnValue;
+	}
+
+	@Override
+	public void setStack(int slot, ItemStack stack) {
+		inventory.setStack(slot, stack);
+		inventoryChanged();
+	}
+
+	@Override
+	public boolean canPlayerUse(PlayerEntity player) {
+		return false;
+	}
+
+	public ItemStack getStoredItem() {
         return inventory.getStack(0);
     }
 
@@ -254,4 +290,9 @@ public class CuttingBoardBlockEntity extends SyncedBlockEntity {
         return ItemStack.EMPTY;
     }
 
+	@Override
+	public void clear() {
+		this.inventory.setStack(0, ItemStack.EMPTY);
+		inventoryChanged();
+	}
 }
