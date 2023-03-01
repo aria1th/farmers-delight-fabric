@@ -15,10 +15,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.*;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -128,7 +125,7 @@ public class CuttingBoardBlock extends BlockWithEntity implements Waterloggable 
     private ActionResult tryAddItemFromPlayerHand(World world, CuttingBoardBlockEntity cuttingBoardBlockEntity, PlayerEntity player, Hand hand) {
         ItemStack itemHeld = player.getStackInHand(hand);
         ItemStack itemOffhand = player.getOffHandStack();
-		if (itemHeld.getItem() instanceof ToolItem){
+		if (itemHeld.getItem() instanceof ToolItem || itemHeld.getItem() instanceof ShearsItem|| itemHeld.getItem() instanceof FlintAndSteelItem){
 			return ActionResult.PASS;
 		}
 
